@@ -75,6 +75,9 @@ def adjective_to_verb(sentence, index):
         raise TypeError("sentence must be a string and index must be an int")
 
     words = sentence.split()
+    if not 0 <= index < len(words):
+        raise IndexError("index must be a valid index of the sentence")
+
     adjective = words[index]
     if adjective[-1] in string.punctuation:
         return adjective[:-1] + "en"
