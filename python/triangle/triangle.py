@@ -1,4 +1,4 @@
-def is_triangle(sides):
+def is_triangle(sides: list) -> bool:
     if not (
         isinstance(sides, list)
         and len(sides) == 3
@@ -10,13 +10,13 @@ def is_triangle(sides):
     return a + b >= c and b + c >= a and a + c >= b
 
 
-def equilateral(sides):
+def equilateral(sides: list) -> bool:
     return is_triangle(sides) and len(set(sides)) == 1
 
 
-def isosceles(sides):
+def isosceles(sides: list) -> bool:
     return is_triangle(sides) and len(set(sides)) <= 2
 
 
-def scalene(sides):
+def scalene(sides: list) -> bool:
     return is_triangle(sides) and len(set(sides)) == 3
