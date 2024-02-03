@@ -1,5 +1,6 @@
 """Functions for compiling dishes and ingredients for a catering company."""
 
+from typing import List, Tuple, Set, Union
 
 from sets_categories_data import (
     VEGAN,
@@ -14,7 +15,9 @@ from sets_categories_data import (
 )
 
 
-def clean_ingredients(dish_name, dish_ingredients):
+def clean_ingredients(
+    dish_name: str, dish_ingredients: List[str]
+) -> Tuple[str, Set[str]]:
     """Remove duplicates from `dish_ingredients`.
 
     :param dish_name: str - containing the dish name.
@@ -36,7 +39,7 @@ def clean_ingredients(dish_name, dish_ingredients):
     return (dish_name, set(dish_ingredients))
 
 
-def check_drinks(drink_name, drink_ingredients):
+def check_drinks(drink_name: str, drink_ingredients: List[str]) -> str:
     """Append "Cocktail" (alcohol)  or "Mocktail" (no alcohol) to `drink_name`, based on `drink_ingredients`.
 
     :param drink_name: str - name of the drink.
@@ -48,13 +51,19 @@ def check_drinks(drink_name, drink_ingredients):
 
     """
 
-    drink_name, drink_ingredients = clean_ingredients(drink_name, drink_ingredients)
+    drink_cleaned, drink_ingredients_cleaned = clean_ingredients(
+        drink_name, drink_ingredients
+    )
 
-    drink_type = "Cocktail" if set(ALCOHOLS) & set(drink_ingredients) else "Mocktail"
-    return f"{drink_name} {drink_type}"
+    drink_type = (
+        "Cocktail" if set(ALCOHOLS) & set(drink_ingredients_cleaned) else "Mocktail"
+    )
+    return f"{drink_cleaned} {drink_type}"
 
 
-def categorize_dish(dish_name, dish_ingredients):
+def categorize_dish(
+    dish_name: str, dish_ingredients: List[str]
+) -> Union[str, Exception]:
     """Categorize `dish_name` based on `dish_ingredients`.
 
     :param dish_name: str - dish to be categorized.
@@ -67,7 +76,9 @@ def categorize_dish(dish_name, dish_ingredients):
 
     """
 
-    dish_name, dish_ingredients = clean_ingredients(dish_name, dish_ingredients)
+    dish_cleaned, dish_ingredients_cleaned = clean_ingredients(
+        dish_name, dish_ingredients
+    )
 
     categories = {
         "VEGAN": VEGAN,
@@ -78,12 +89,12 @@ def categorize_dish(dish_name, dish_ingredients):
     }
 
     for category, ingredients in categories.items():
-        if dish_ingredients.issubset(ingredients):
-            return f"{dish_name}: {category}"
+        if dish_ingredients_cleaned.issubset(ingredients):
+            return f"{dish_cleaned}: {category}"
     return Exception("Dish doesn't fit in any category")
 
 
-def tag_special_ingredients(dish):
+def tag_special_ingredients(dish: Tuple[str, List[str]]) -> Tuple[str, Set[str]]:
     """Compare `dish` ingredients to `SPECIAL_INGREDIENTS`.
 
     :param dish: tuple - of (dish name, list of dish ingredients).
@@ -100,7 +111,7 @@ def tag_special_ingredients(dish):
     return (dish_name, dish_ingredients & SPECIAL_INGREDIENTS)
 
 
-def compile_ingredients(dish_list):
+def compile_ingredients(dish_list: List[Set[str]]) -> Set[str]:
     """Create a master list of ingredients.
 
     :param dish_list: list - of dish ingredient sets.
@@ -112,7 +123,7 @@ def compile_ingredients(dish_list):
     return set.union(*dish_list)
 
 
-def separate_appetizers(dishes, appetizers):
+def separate_appetizers(dishes: List[str], appetizers: List[str]) -> List[str]:
     """Determine which `dishes` are designated `appetizers` and remove them.
 
     :param dishes: list - of dish names.
@@ -126,7 +137,7 @@ def separate_appetizers(dishes, appetizers):
     return list(set(dishes) - set(appetizers))
 
 
-def singleton_ingredients(dishes, intersection):
+def singleton_ingredients(dishes: List[Set[str]], intersection: Set[str]) -> Set[str]:
     """Determine which `dishes` have a singleton ingredient (an ingredient that only appears once across dishes).
 
     :param dishes: list - of ingredient sets.
@@ -146,7 +157,7 @@ def singleton_ingredients(dishes, intersection):
         and all(isinstance(ingredient, str) for ingredient in dish)
         for dish in dishes
     ):
-        raise TypeError("dishes must be a list of tuples of strings")
+        raise TypeError("dishes must be a list of sets of strings")
 
     if not isinstance(intersection, set) or not all(
         isinstance(ingredient, str) for ingredient in intersection

@@ -8,17 +8,17 @@ He answers 'Whatever.' to anything else.
 """
 
 
-def response(hey_bob):
+def response(hey_bob: str) -> str:
     """Bob's response to a given statement."""
 
-    hey_bob = hey_bob.strip()
+    stripped = hey_bob.strip()
 
-    if hey_bob == "":
+    if stripped == "":
         return "Fine. Be that way!"
-    if hey_bob.isupper() and hey_bob.endswith("?"):
+    if stripped.isupper() and stripped.endswith("?"):
         return "Calm down, I know what I'm doing!"
-    if hey_bob.isupper():
+    if stripped.isupper():
         return "Whoa, chill out!"
-    if hey_bob.endswith("?"):
+    if stripped.endswith("?"):
         return "Sure."
     return "Whatever."

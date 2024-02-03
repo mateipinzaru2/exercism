@@ -1,24 +1,31 @@
 """Functions to manage and organize queues at Chaitana's roller coaster."""
 
+from typing import List, Union
 
-def is_valid_queue(queue):
+
+def is_valid_queue(queue: List[str]) -> bool:
     """Check if the queue is a valid list of names."""
     return isinstance(queue, list) and all(
         isinstance(name, str) and len(name) > 0 for name in queue
     )
 
 
-def is_valid_ticket_type(ticket_type):
+def is_valid_ticket_type(ticket_type: int) -> bool:
     """Check if the ticket type is valid."""
     return ticket_type in (0, 1)
 
 
-def is_valid_person_name(person_name):
+def is_valid_person_name(person_name: str) -> bool:
     """Check if the person name is valid."""
     return isinstance(person_name, str) and len(person_name) > 0
 
 
-def add_me_to_the_queue(express_queue, normal_queue, ticket_type, person_name):
+def add_me_to_the_queue(
+    express_queue: List[str],
+    normal_queue: List[str],
+    ticket_type: int,
+    person_name: str,
+) -> List[str]:
     """Add a person to the 'express' or 'normal' queue depending on the ticket number.
 
     :param express_queue: list - names in the Fast-track queue.
@@ -50,7 +57,7 @@ def add_me_to_the_queue(express_queue, normal_queue, ticket_type, person_name):
     return normal_queue
 
 
-def find_my_friend(queue, friend_name):
+def find_my_friend(queue: List[str], friend_name: str) -> Union[int, None]:
     """Search the queue for a name and return their queue position (index).
 
     :param queue: list - names in the queue.
@@ -70,7 +77,7 @@ def find_my_friend(queue, friend_name):
     return queue.index(friend_name)
 
 
-def add_me_with_my_friends(queue, index, person_name):
+def add_me_with_my_friends(queue: List[str], index: int, person_name: str) -> List[str]:
     """Insert the late arrival's name at a specific index of the queue.
 
     :param queue: list - names in the queue.
@@ -96,7 +103,7 @@ def add_me_with_my_friends(queue, index, person_name):
     return queue
 
 
-def remove_the_mean_person(queue, person_name):
+def remove_the_mean_person(queue: List[str], person_name: str) -> List[str]:
     """Remove the mean person from the queue by the provided name.
 
     :param queue: list - names in the queue.
@@ -121,7 +128,7 @@ def remove_the_mean_person(queue, person_name):
     return queue
 
 
-def how_many_namefellows(queue, person_name):
+def how_many_namefellows(queue: List[str], person_name: str) -> int:
     """Count how many times the provided name appears in the queue.
 
     :param queue: list - names in the queue.
@@ -140,7 +147,7 @@ def how_many_namefellows(queue, person_name):
     return queue.count(person_name)
 
 
-def remove_the_last_person(queue):
+def remove_the_last_person(queue: List[str]) -> str:
     """Remove the person in the last index from the queue and return their name.
 
     :param queue: list - names in the queue.
@@ -153,7 +160,7 @@ def remove_the_last_person(queue):
     return queue.pop()
 
 
-def sorted_names(queue):
+def sorted_names(queue: List[str]) -> List[str]:
     """Sort the names in the queue in alphabetical order and return the result.
 
     :param queue: list - names in the queue.
